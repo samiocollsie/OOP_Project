@@ -1,91 +1,10 @@
-/*
-// Tester.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
-#include <stdio.h>
-#include <string>
-
-//creating a function 
-
-//Function overloading, can use the same name for a function 
-// but if depending on the requirements, it will run one over the
-// other e.g. if it requires an argument it will run the second,
-// if no argument, then the first one
-
-// this example uses the idea of already knowing the int inputted
-// for an int you put %d
-// for a float %g 
-
-//void print() {
-//
-//    printf("func1\n");
-//}
-//Int 
-//void print(int x) {
-//    printf("func1 with an argument %d\n", x);
-//
-//}
-// float 
-//void print(float f) {
-//    printf("log: %f\n", f);
-//}
-//  string 
-//void print(const char* str) {
-//    printf("log: %s\n", str);
-//}
-
-
-
-// Class Vertex 
-class Vertex {
-    float x, y, z;
-};
-
-// a struct is a way to group low level data types & create more complex
-// concepts. Can be used as shapes, plus OOP.  
-struct VertexStruct {
-    float x, y, z;
-    void setToZero() {
-        x = 0;
-        y = 0;
-        z = 0;
-    }
-};
-
-// MAIN CODE 
-int main()
-{
-    //Overloading functions 
-    //print();
-    //print(0.5f);
-    //print("hi");
-
-    VertexStruct v, v2; 
-    v.x = 0;
-    v.y = 1;
-    v.z = 2;
-
-    v2.x = 0;
-
-    v.setToZero();
-
-    printf("%g\n", v.y);
-
-    return 0;
-}
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-*/
 
 #include <iostream>
 #include <conio.h>
 #include <stdio.h>
 #include <Windows.h>
 #include <dos.h>
+#include <time.h>
 
 #define MAXSNAKESIZE 100
 
@@ -94,6 +13,8 @@ using namespace std;
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
 
+
+// testing position of mouse at start 
 void goToXY(int x, int y) {
     CursorPosition.X = x;
     CursorPosition.Y = y;
@@ -143,25 +64,30 @@ public:
         p->x = x;
         p->y = y;
     }
+    // testing it displayed (at the start of project) 
     void Debug() {
         cout << "(" << x << "," << y << ")";
     }
 };
 
+//creating the Snake Class
 class Snake {
+
 private:
     Point* cell[MAXSNAKESIZE]; // Snake array 
     int size; // current size of the Snake
     char dir; // the current direction of the Snake
-    Point fruit;
+    //Point fruit;
+
 public:
     Snake() {
         size = 1; //starting size of the snake
         cell[0] = new Point(20, 20); //starting position of the Snake (20,20)
         for (int i = 1; i < MAXSNAKESIZE; i++) {
             cell[i] = NULL;
-
         }
+        // setting position of snake to random 
+        //fruit.setPoint(rand()%50, rand()%25);
     }
     void addCell(int x, int y) {
         cell[size++] = new Point(x, y);
@@ -179,7 +105,13 @@ public:
     void turnRight() {
         dir = 'd'; //RIGHT
     }
+
+    // creating the move function 
     void Move() {
+
+        //creating the clear screen function 
+        system("cls");
+
         //making the snake body follow its head 
         for (int i = size - 1; i > 0; i--) {
             cell[i]->CopyPosition(cell[i - 1]);
@@ -200,16 +132,27 @@ public:
             break;
         }
 
+        // detection of the fruit 
+        /*if (fruit.GetX() == cell[0]->GetX() && fruit.GetY() == cell[0]->GetY()) {
+            addCell(0,0);
+            fruit.setPoint(rand() % 50, rand() % 25);
+        }*/
+
         // drawing the Snake
         for (int i = 0; i < size; i++) {
             cell[i]->Draw();
-
+            
+            //fruit.Draw();
+            
             Sleep(100);
         }
     }
 };
 
 int main() {
+
+    //random generator
+    srand((unsigned)time(NULL));
     
     //Testing Snake
     Snake snake;
