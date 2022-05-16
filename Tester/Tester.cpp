@@ -34,6 +34,11 @@ public:
         this-> x = y;
         this-> y = y;
     }
+    void setPoint(int x, int y) {
+        this->x = x;
+        this->y = y;
+
+    }
     int GetX() {
         return x;
     }
@@ -52,9 +57,15 @@ public:
     void moveLeft() {
         x--;
     }
+    //Drawing the Snake 
     void Draw() {
         goToXY(x, y);
         cout << "*";
+    }
+    //Drawing the fruit 
+    void fruitDraw() {
+        goToXY(x, y);
+        cout << "o";
     }
     void Delete() {
         goToXY(x, y);
@@ -77,7 +88,7 @@ private:
     Point* cell[MAXSNAKESIZE]; // Snake array 
     int size; // current size of the Snake
     char dir; // the current direction of the Snake
-    //Point fruit;
+    Point fruit;
 
 public:
     Snake() {
@@ -87,7 +98,7 @@ public:
             cell[i] = NULL;
         }
         // setting position of snake to random 
-        //fruit.setPoint(rand()%50, rand()%25);
+        fruit.setPoint(rand()%50, rand()%25);
     }
     void addCell(int x, int y) {
         cell[size++] = new Point(x, y);
@@ -133,16 +144,16 @@ public:
         }
 
         // detection of the fruit 
-        /*if (fruit.GetX() == cell[0]->GetX() && fruit.GetY() == cell[0]->GetY()) {
+        if (fruit.GetX() == cell[0]->GetX() && fruit.GetY() == cell[0]->GetY()) {
             addCell(0,0);
             fruit.setPoint(rand() % 50, rand() % 25);
-        }*/
+        }
 
         // drawing the Snake
         for (int i = 0; i < size; i++) {
             cell[i]->Draw();
             
-            //fruit.Draw();
+            fruit.fruitDraw();
             
             Sleep(100);
         }
