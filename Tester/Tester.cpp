@@ -16,9 +16,6 @@ using namespace std;
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
 
-// setting timer variable
-int count = 0;
-
 // testing position of mouse at start 
 void goToXY(int x, int y) {
     CursorPosition.X = x;
@@ -50,6 +47,11 @@ public:
     int GetY() {
         return y;
     }
+
+
+    // allowing the player reappear on the screen e.g. 
+    // the player goes to the top of the console, they will
+    // at the bottom of the screen
     void moveUp() {
         y--;
         if (y < 0) {
@@ -62,7 +64,7 @@ public:
             y = 0;
         }
     }
-    void moveRight() {
+    void moveRight() { 
         x++;
         if (x > MAXFRAME_X) {
             x = 0;
@@ -84,20 +86,9 @@ public:
         goToXY(x, y);
         cout << "X";
     }
-    void Delete() {
-        goToXY(x, y);
-        cout << " ";
-    }
     void CopyPosition(Point * p) {
         p->x = x;
         p->y = y;
-    }
-    // Trying to figure out how to sort collision out between the players head and its body 
-    int IsEqual(Point* p) {
-        if (p->x == x && p->y == y) {
-            return 1;
-        }
-        return 0;
     }
 };
 
@@ -114,8 +105,8 @@ private:
     // creating start screen
     int startGame;
 
-
 public:
+
     Snake() {
         size = 1; //starting size of the snake
         cell[0] = new Point(20, 20); //starting position of the Snake (20,20)
@@ -150,7 +141,7 @@ public:
         dir = 'd'; //RIGHT
     }
 
-    // creating the move function 
+    // creating the Welcome Screen  
     void welcomeScreen() {
         SetConsoleTextAttribute(console, 15); // setting the colour of the background 
         
@@ -172,10 +163,11 @@ public:
                     `.   ~ - - - - ~   .'						
                        ~ . _ _ _ _ . ~							
 								                                
-                Welcome to the Snake Console Game!                     )";
+             Welcome to the Endless Snake Console Game!                     )";
 
 
     }
+    //Creating the move function 
     void Move() {
 
         //creating the clear screen function 
@@ -185,19 +177,12 @@ public:
             if (startGame == 0) {
                 welcomeScreen();
                 cout << "\n \n Press any key to start";
+                cout << "\n Press E to end the game";
                 _getch();
                 startGame = 1;
                 state = 1;
             }
-            //else{
-            //    cout << "\n Game Over";
-            //    cout << "\n Press any key to start";
-            //    _getch(); // pauses the output console until an input it entered 
-            //    state = 0;
-            //    size = 1;
-            //    startGame = 0;
-            //    SetConsoleTextAttribute(console, 15);
-            //}
+
         }
 
         //making the snake body follow its head 
@@ -233,19 +218,17 @@ public:
             fruit.fruitDraw();
 
         }
-    
+      
     }
 };
 
 int main() {
 
-    //random generator
-    //setcursor(0, 0);
+    // random generator
     srand((unsigned)time(NULL));
-    
+
     //Creating a new snake from the Snake class 
     Snake snake;
-
     char op = '1';
     do {
         if (_kbhit()) {
@@ -275,7 +258,7 @@ int main() {
 
         }
         snake.Move();
-      
+
     } while (op != 'e');
 
 
